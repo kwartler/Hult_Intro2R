@@ -6,8 +6,8 @@
 source("~/Desktop/Hult_Intro2R/personalFiles/openAIKey.R")
 
 
-anyPrompt <- function(apiKey = Sys.getenv("OPENAI_KEY"), 
-                      userPrompt, 
+anyPrompt <- function(userPrompt, 
+                      apiKey = Sys.getenv("OPENAI_KEY"),
                       temperature=0, 
                       max_tokens=256, 
                       top_p=1,

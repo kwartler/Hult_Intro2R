@@ -5,20 +5,20 @@
 # Only needed the first time, and can be saved to the environment to keep it from the actual script
 source("~/Desktop/Hult_Intro2R/personalFiles/openAIKey.R")
 
-codeHelp <- function(apiKey = Sys.getenv("OPENAI_KEY"), 
+codeHelp <- function(userPrompt,
+                     apiKey = Sys.getenv("OPENAI_KEY"), 
                      language = 'R', #could be r-markdown or anything really
-                      userPrompt, 
-                      temperature=0, 
-                      max_tokens=256, 
-                      top_p=1,
-                      frequency_penalty=0, 
-                      presence_penalty=0){
+                     temperature=0, 
+                     max_tokens=256, 
+                     top_p=1,
+                     frequency_penalty=0, 
+                     presence_penalty=0,
+                     codeOnly = T){ # only return the code and omit comments
   require(httr)
   require(jsonlite)
   
   # Construct the prompting
-  # You could improve this base prompting system and response example significantly to improve your results
-  promptList <- list(list(role='system',content = 'You are an expert programmer and data scientists.  Using the R language write code without any comments to answer the user'),
+  promptList <- list(list(role='system',content = paste('You are an expert programmer and data scientist in all computer languages including R and python.  Using the',language,' language write code without any comments to answer the user.  Use markdown.')),
                      list(role='user', content ='How do you read in a CSV with the R language?'),
                      list(role='assistant', content = 'my_data <- read.csv("my_file.csv")
 '),
@@ -47,6 +47,18 @@ codeHelp <- function(apiKey = Sys.getenv("OPENAI_KEY"),
     response <- capture.output(cat(fromJSON(content(req, as = "text", encoding = "UTF-8"))$choices$message$content))
     response <- response[nchar(response)>0]
     
+    if(codeOnly==T & length(grep('```', response))==2){
+      markdown <- grep('```', response)
+      st <- markdown[1]
+      en <- markdown[2]
+      response <- response[st:en]
+      drops <- grep('```', response)
+      response <- response[-drops]
+    } else {
+      warning('codeOnly was tried but the back ticks weren\'t as expected so returning all.')
+      response
+    }
+   
   } else {
     statusResp <- paste0('The POST request failed with status: ',statusChk)
     response <- statusResp
@@ -59,7 +71,15 @@ codeHelp <- function(apiKey = Sys.getenv("OPENAI_KEY"),
 # max_tokens  = 256*2)
 #codeHelp
 
+# Test
+testResp <- codeHelp('write code to create a decision tree')
+testResp
+
+# Bring in the general gpt helper for an explanation
+#source("~/Desktop/Hult_Intro2R/lessons/B_GPT_Robjects/B_anyPromptOpenAI.R")
+#anyPrompt(paste('can you explain the following code?',testResp, collapse = ' '),
+          apiKey = Sys.getenv("OPENAI_KEY"))
+
 # End
 
 
-# End
