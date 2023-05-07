@@ -20,8 +20,7 @@ codeHelp <- function(userPrompt,
   # Construct the prompting
   promptList <- list(list(role='system',content = paste('You are an expert programmer and data scientist in all computer languages including R and python.  Using the',language,' language write code without any comments to answer the user.  Use markdown.')),
                      list(role='user', content ='How do you read in a CSV with the R language?'),
-                     list(role='assistant', content = 'my_data <- read.csv("my_file.csv")
-'),
+                     list(role='assistant', content = 'my_data <- read.csv("my_file.csv")'),
                      list(role='user',content=userPrompt))
   
   # Put together the API arguments
@@ -67,18 +66,19 @@ codeHelp <- function(userPrompt,
 }
 
 # Example
-#codeHelp <- codeHelp(userPrompt = "write code to create a stacked bar chart. Each bar should be for a state and The object `df` is a data frame with columns `id',`state`,  `subcateogry`,`revenue`", 
+#codeHelpExample <- codeHelp(userPrompt = "write code to create a stacked bar chart. Each bar should be for a state and The object `df` is a data frame with columns `id',`state`,  `subcateogry`,`revenue`", 
 # max_tokens  = 256*2)
-#codeHelp
+#codeHelpExample
 
 # Test
-testResp <- codeHelp('write code to create a decision tree')
-testResp
+#testResp <- codeHelp('write code to create a decision tree')
+#testResp
+#cat(paste(testResp, collapse = '\n'))
 
 # Bring in the general gpt helper for an explanation
 #source("~/Desktop/Hult_Intro2R/lessons/B_GPT_Robjects/B_anyPromptOpenAI.R")
 #anyPrompt(paste('can you explain the following code?',testResp, collapse = ' '),
-          apiKey = Sys.getenv("OPENAI_KEY"))
+#          apiKey = Sys.getenv("OPENAI_KEY"))
 
 # End
 
