@@ -7,7 +7,7 @@
 #'
 
 ## Set the working directory
-setwd("~/Desktop/Hult_Visualizing-Analyzing-Data-with-R/personalFiles")
+setwd("~/Desktop/Hult_Intro2R/personalFiles")
 
 # Libs
 library(maps)

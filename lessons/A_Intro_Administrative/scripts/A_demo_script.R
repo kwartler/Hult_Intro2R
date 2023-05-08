@@ -4,7 +4,7 @@
 #' Date: Feb 16, 2023
 
 # Step 1 Set the working directory: where's the fruit? Where should I save my outputs?
-setwd("~/Desktop/Hult_Visualizing-Analyzing-Data-with-R/personalFiles")
+setwd("~/Desktop/Hult_Intro2R/personalFiles")
 
 # Step 2 Load some libraries: Make R a customized piece of software
 options(scipen = 999)
