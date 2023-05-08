@@ -2,11 +2,11 @@
 #' Purpose: Rate of speech for hip/hop; Build a plot of the rate of change for lyrics
 #' Author: Ted Kwartler
 #' License: GPL>=3
-#' Date: Mar 20, 2023
+#' Date: May 8, 2023
 #'
 
 # Set wd
-setwd("~/Desktop/Hult_Visualizing-Analyzing-Data-with-R/personalFiles")
+setwd("~/Desktop/Hult_Intro2R/personalFiles")
 
 # Options
 options(scipen = 999)
@@ -16,7 +16,7 @@ library(stringr)
 library(ggplot2)
 library(ggthemes)
 
-folderPath <- '~/Desktop/Hult_Visualizing-Analyzing-Data-with-R/BAN1/A_Mar21/scripts/z_rap_songs/shortenedSongNames'
+folderPath <- '~/Desktop/Hult_Intro2R/lessons/B_GPT_Robjects/data/z_rap_songs/shortenedSongNames'
 
 
 # Multiple files as a list
@@ -24,12 +24,12 @@ tmp <- list.files(path       = folderPath,
                   pattern    = '*.csv',
                   full.names = T)
 allSongs <- lapply(tmp, read.csv)
-names(allSongs) <- gsub('csv','', 
+names(allSongs) <- gsub('.csv','', 
                         list.files(path    = folderPath,
                                    pattern = '*.csv'))
 
 # Basic Exploration
-allSongs$CirclesbyPostMalone.
+allSongs$CirclesbyPostMalone
 
 ## Length of each song
 songLength <- sapply(allSongs, function(x){ max(x[,1])}) 
@@ -51,11 +51,12 @@ for(i in 1:length(allSongs)){
 
 # Get the timeline of a song & examine
 songTimeline  <- do.call(rbind, wordCountList)
-head(subset(songTimeline, songTimeline$song=='CirclesbyPostMalone.'))
+head(subset(songTimeline, songTimeline$song=='CirclesbyPostMalone'))
 
 # Get the last values for each song (total words but now with time)
 totalWords <- lapply(wordCountList, tail,1)
 totalWords <- do.call(rbind, totalWords)
+head(totalWords)
 
 # Make a plot of the speech cadence
 ggplot(songTimeline,  aes(x     = endTime,
@@ -72,11 +73,7 @@ ggplot(songTimeline,  aes(x     = endTime,
   theme_tufte() + theme(legend.position = "none")
 
 # Two clusters, let's see Em vs all
-eminemSongs <- c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-                 FALSE, FALSE,  TRUE, FALSE, FALSE, FALSE, FALSE, 
-                 TRUE, FALSE,  TRUE,  TRUE,  TRUE, FALSE, FALSE,
-                 TRUE, FALSE, FALSE, FALSE,  TRUE, TRUE, FALSE,
-                 FALSE,  TRUE)
+eminemSongs <- grepl('Eminem', names(allSongs))
 totalWords$eminem <- eminemSongs
 ggplot(songTimeline,  aes(x     = endTime,
                           y     = cumulativeWords, 

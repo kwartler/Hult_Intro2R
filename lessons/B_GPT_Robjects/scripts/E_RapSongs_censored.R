@@ -2,7 +2,7 @@
 #' Purpose: Rate of speech for hip/hop; Build a plot of the rate of change for lyrics
 #' Author: Ted Kwartler
 #' License: GPL>=3
-#' Date: Dec 28 2020
+#' Date: May 8 2023
 #'
 
 # wd
