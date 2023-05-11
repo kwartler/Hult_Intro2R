@@ -16,8 +16,9 @@ library(CalledStrike)
 library(lubridate)
 library(dplyr)
 
-# Load
-possiblePurchase <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/BAN1/B_Mar22/data/MarthasVineyardCondo.csv')
+# Load & define the data folder path for your computs
+pth              <- '~/Desktop/Hult_Intro2R/lessons/C_EDA_VIZ/data/'
+possiblePurchase <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/C_EDA_VIZ/data/MarthasVineyardCondo.csv')
 
 # Clean $ signs
 possiblePurchase$Avg.Price.Per.Night <- as.numeric(gsub('[$]', '', possiblePurchase$Avg.Price.Per.Night))
@@ -43,14 +44,16 @@ tmpDates
 possiblePurchase$closingDate <- days_in_month(tmpDates) # from lubridate
 
 # Now put the Month column into a closing month Date class by overwriting it
-possiblePurchase$Month <- as.Date(paste(possiblePurchase$yr,possiblePurchase$month,possiblePurchase$closingDate,sep='-'),
-                                  "%Y-%m-%d")
+possiblePurchase$Month <- as.Date(paste(possiblePurchase$yr,possiblePurchase$month,possiblePurchase$closingDate,sep='-'), "%Y-%m-%d")
 
 # Finally 
 head(possiblePurchase)
 
 # Simple Scatter: relationship between two variables
-scatterPlotBase <- ggplot(data = possiblePurchase, aes(x=NightOccupied, y=EffectiveGrossIncome)) + geom_point() + theme_gdocs()
+scatterPlotBase <- ggplot(data = possiblePurchase, 
+                          aes(x=NightOccupied, y=EffectiveGrossIncome)) + 
+  geom_point() + 
+  theme_gdocs()
 scatterPlotBase
 
 # Now add a trend line, linear regression 
@@ -64,13 +67,17 @@ ggplot(data = possiblePurchase, aes(x=NightOccupied, y=EffectiveGrossIncome, col
   theme_stata() + labs(x="Occupied Nights", y = "Gross Income", title= "MV Motel Condo")
 
 # Add another dimension size; number of nights occupied has a relationship to income and so does price to night.  no shocker there bc of "high season" has high occupancy and high rates, but a good example still
-ggplot(data = possiblePurchase, aes(x=NightOccupied, y=EffectiveGrossIncome, color = yr, size = Avg.Price.Per.Night)) + 
-  geom_point() + theme_wsj()
+ggplot(data = possiblePurchase, 
+       aes(x=NightOccupied, y=EffectiveGrossIncome, color = yr, linewidth = Avg.Price.Per.Night)) + 
+  geom_point() + 
+  theme_wsj()
 
 # a Cleveland Dot plot, xy both class levels, color and size can be other dimensions but this shows only 3
 df <- subset(possiblePurchase, possiblePurchase$yr !='2020')
-ggplot(data = df, aes(x=yr, y=factor(month), size = NetOperatingIncome, color = NetOperatingIncome)) + 
-  geom_point() +  scale_colour_viridis_c(option = "magma")  + 
+ggplot(data = df, 
+       aes(x=yr, y=factor(month), size = NetOperatingIncome, color = NetOperatingIncome)) + 
+  geom_point() +  
+  scale_colour_viridis_c(option = "magma")  + 
   ggdark::dark_theme_gray() + 
   theme(legend.position = "none") +
   labs(x="year", y = "month", title= "Operating Income MV Condo")
@@ -90,13 +97,13 @@ ggplot(incomes) +
   geom_point(data = incomes, aes(x=minIncome, y=factor(month)), color = 'red', size = 2) + 
   geom_point(data = incomes, aes(x=maxIncome, y=factor(month)), color = 'blue', size = 2) +
   geom_vline(xintercept = 0, linetype = 'dotted', color = 'darkgrey', size = 0.5) +
-  theme_few() + theme(legend.position="none") +
+  theme_few() + 
+  theme(legend.position="none") +
   labs(x="Income", y = "Month", title= "Min/Max Income by Month")
 
 # Deal w over-plotting
-# Load other data, use the EXACT path on your computer
-pth <- '~/Desktop/Hult_Visualizing-Analyzing-Data-with-R/BAN1/B_Mar22/data/player_copy.rds'
-player <- readRDS(pth)
+# Load other data, using the EXACT path on your computer instantiated at the beginning
+player <- readRDS(paste0(pth,'player_copy.rds'))
 head(data.frame(player$plate_x, player$plate_z))
 pitchingLocations <- data.frame(plate_x = player$plate_x, plate_z = player$plate_z)
 basePlot <- ggplot(data = pitchingLocations, aes(x = plate_x, y = plate_z)) + ggtitle("Miguel Castro's Pitch Locations")

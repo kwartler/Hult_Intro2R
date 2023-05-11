@@ -11,9 +11,9 @@ library(ggthemes)
 library(rbokeh)
 
 ## Bring in some data
-screenTime <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/BAN1/B_Mar22/data/on_screen_time.csv')
-scenes     <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/BAN1/B_Mar22/data/force_awakens_scenes.csv')
-characters <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/BAN1/B_Mar22/data/force_awakens_character_info.csv')
+screenTime <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/C_EDA_VIZ/data/on_screen_time.csv')
+scenes     <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/C_EDA_VIZ/data/force_awakens_scenes.csv')
+characters <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/C_EDA_VIZ/data/force_awakens_character_info.csv')
 
 
 ## Exploratory Data Analysis, and indexing
@@ -81,11 +81,11 @@ barplot(characterTally[1:5],
         main='Force Awakens: Character Scene Tally', 
         las = 2)
 
-# Base plot() default is a scatter; here kind of nonsense
-plot(characterTally, main='Force Awakens: Character Scene Tally')
+# Base plot() default is a scatter; here we change to line chart to see the scene drop off 
+plot(characterTally, main='Force Awakens: Character Scene Tally', type ='l')
 
-# Base plot() type parameter "l" is a line chart; here kind of nonsense
-plot(characterTally, type = 'l', main='Force Awakens: Character Scene Tally')
+# Base plot() scatterplot to see start and end time relationship, possible outlier?
+plot(scenes$start, scenes$end, main='Force Awakens: scene start & end')
 
 # Save a basic plot to disk in the personal folder since it was set as the "working directory"
 png("characterTally_plot.png")

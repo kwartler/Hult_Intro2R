@@ -13,7 +13,7 @@ library(ggthemes)
 library(lubridate)
 
 # Load
-possiblePurchase <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/BAN1/B_Mar22/data/MarthasVineyardCondo.csv')
+possiblePurchase <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/C_EDA_VIZ/data/MarthasVineyardCondo.csv')
 possiblePurchase <- as.data.frame(possiblePurchase)
 
 # Examine
@@ -60,7 +60,7 @@ ggplot(data = possiblePurchase, aes(x=month, y=NightOccupied, group=yr, color=yr
 
 
 # cumsum by group, really compelling with many groups and time component, could be a "line chart" also though
-rap <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/DD1/B_Mar2/data/rapSongsTimeline_wrangledData.csv')
+rap <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/C_EDA_VIZ/data/rapSongsTimeline_wrangledData.csv')
 head(rap)
 totalWords <- rap %>% group_by(song) %>% summarise(maxWords = max(cumulativeWords, na.rm=TRUE))
 totalTime <- rap %>% group_by(song) %>% summarise(endTime = max(endTime, na.rm=TRUE))

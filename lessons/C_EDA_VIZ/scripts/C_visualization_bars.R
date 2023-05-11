@@ -13,7 +13,7 @@ library(lubridate)
 library(tidyr)
 
 # Load
-possiblePurchase <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/BAN1/B_Mar22/data/MarthasVineyardCondo.csv')
+possiblePurchase <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/C_EDA_VIZ/data/MarthasVineyardCondo.csv')
 
 # Examine
 head(possiblePurchase)
