@@ -16,7 +16,7 @@ library(MLmetrics)
 library(datawizard)
 
 ## Bring in some data
-dat <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/D_Loops_Logicals_Functions/data/ds_salaries.csv') 
+dat <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/E_DataPrep_Rpart_RF/data/ds_salaries.csv') 
 
 # We can adjust what variables are in the model easily here:
 keeps <- c('experience_level','employment_type','company_size',
