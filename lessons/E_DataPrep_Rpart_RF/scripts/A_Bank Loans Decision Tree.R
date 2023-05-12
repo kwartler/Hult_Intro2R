@@ -1,11 +1,11 @@
 #' Author: Ted Kwartler
-#' Data: Mar 12, 2023
+#' Data: May 12, 2023
 #' Purpose: Load data build a decision tree
 #' https://archive.ics.uci.edu/ml/datasets/bank+marketing
 
 
 ## Set the working directory
-setwd("~/Desktop/Hult_Visualizing-Analyzing-Data-with-R/personalFiles")
+setwd("~/Desktop/Hult_Intro2R/personalFiles")
 options(scipen=999)
 
 ## Load the libraries
@@ -13,7 +13,7 @@ library(caret)
 library(rpart.plot) #visualizing
 
 ## Bring in some data
-dat <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/BAN1/F_Apr4/data/bank-full_v2.csv') 
+dat <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/E_DataPrep_Rpart_RF/data/bank-full_v2.csv') 
 
 # Partitioning
 splitPercent <- round(nrow(dat) %*% .9)
@@ -123,7 +123,43 @@ head(trainCaret)
 # Get the conf Matrix
 confusionMatrix(trainCaret, as.factor(trainDat$y))
 
-# Now more consistent accuracy & fewer rules!
+#w In some data sets, we have "unbalanced" y variable data so we need to make adjustments. 
+# There are multiple methods for dealing with class imbalance.  Re-sampling methods could be "ROSE: Random Over-Sampling Examples"
+# or mlr::smote "Synthetic Minority Oversampling Technique "
+
+# Simple method could be to observe the training data class weights and use that in the model fit.
+# This will increase the signal assigned to the minority class.
+
+classTally   <- proportions(table(trainDat$y))
+classTally
+classWeights <- ifelse(trainDat$y == "no", classTally[2], classTally[1])
+
+
+# Here is how to use class weights in the original
+# tree <- rpart(as.factor(y) ~., data = trainDat, method = "class", weights = classWeights)
+
+# Here it is in the caret method:
+set.seed(1234)
+fit <- train(as.factor(y) ~., 
+             data = trainDat, 
+             method = "rpart", 
+             weights = classWeights,
+             tuneGrid = data.frame(cp = c(0.0001, 0.001,0.005, 0.01, 0.05, 0.07, 0.1, .25)), 
+             control = rpart.control(minsplit = 1, minbucket = 2)) 
+
+# Slightly different results but still similar
+plot(fit)
+
+
+# Make some predictions on the training set
+trainCaret <- predict(fit, trainDat)
+head(trainCaret)
+
+# Get the conf Matrix
+confusionMatrix(trainCaret, as.factor(trainDat$y))
+
+
+# Now more consistent accuracy and accounts for class imbalance
 testCaret <- predict(fit,testDat)
 confusionMatrix(testCaret,as.factor(testDat$y))
 

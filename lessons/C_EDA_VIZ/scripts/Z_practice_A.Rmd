@@ -1,0 +1,137 @@
+
+---
+title: "Assignment 1 - some R practice"
+---
+
+# A word about R markdown
+
+The assignments for our online R training course will all take the form of R
+markdown documents like this one. These are files ending in '.Rmd' that combine
+R code blocks with plain text, such as this paragraph that you're reading now.
+
+To run the R code blocks you need to have this R markdown file open in RStudio.
+If you're reading this in RStudio right now then all is good and well. If not,
+please start RStudio and open this file using the 'Open File...' option from the
+'File' menu.
+
+Also, save this to your personalFiles folder!!
+
+In these assignments we will describe what we're asking you to do in some plain
+text which will be followed by an empty code block in which you will write the
+R commands as your answers to the exercise.
+
+Here's an example. Suppose we ask you to add two numbers, 34 and 102, together.
+The empty code block where you would carry out this calculation would look like
+this:
+
+```{r}
+
+```
+
+It should appear as a grey box with three small grey and green icons at the top
+on the right hand side.
+
+You can fill in the answer as follows:
+
+```{r}
+34 + 102
+```
+
+You can add extra lines as necessary by hitting the 'Return' key.
+
+Now to run this command you can click on the green play icon, the
+one that is furthest right and points right-ward. 
+
+You should see the answer printed just below the code block, like your console.
+
+
+# Using R as a calculator
+
+1. Convert the following temperatures given in degrees Fahrenheit to Celsius:
+45, 96, 451
+
+```{r}
+
+```
+
+Hint: just do what you'd normally do if you can't remember the formula for
+converting between Celsius and Fahrenheit (Google in my case).
+
+2. Similarly, convert the following temperatures in degrees Celsius to
+Fahrenheit: -65, 100, 20
+
+```{r}
+
+```
+
+# Generating sequence vectors
+
+3. Generate a sequence of numbers representing the days of a year called  `dayPerYr`
+
+```{r}
+
+```
+
+Your friendly statistician has suggested that there should be an R
+function to create a sequence.  Using this function (go look it up) create a sequence from 1 to 365 but now do it in 5 day intervals using the `by` parameter of this function. Call the new object `fiveDayWindows`
+
+```{r}
+
+```
+
+# Looking at types of objects
+
+4. Run the code below and use the class() function (check it's
+help page) and see how R treats each newly-created vector?  After that run it again and use `typeof` to see if there are differences.
+
+```{r}
+num_char <- c(1, 2, 3, "a")
+num_logical <- c(1, 2, 3, TRUE)
+char_logical <- c("a", "b", "c", TRUE)
+tricky <- c(1, 2, 3, "4")
+```
+
+R coerces the data to a lowest common denominator - it has an internal hierarchy.
+Can you work out the hierarchy?
+
+# Plotting data
+
+Using base R, plot the counts (on the y-axis) by the days (x-axis).  While you're at it, look at the documentation for `?rnorm` to see that is does.
+
+```{r}
+days <- c(1, 2, 4, 6, 8, 12, 16)
+counts <- days ^ 2 + rnorm(days, mean = days)
+
+# add your code here
+
+```
+
+# Exploring and summarizing data
+
+6. Your colleague has supplied you with the following table:
+
+| Day | LineA | LineB | LineC |
+| --- | ----- | ----- | ----- |
+|  1  |    4  |    5  |   14  |
+|  2  |    9  |   17  |   16  |
+|  3  |    7  |   22  |   10  |
+|  4  |   12  |   20  |   14  |
+|  5  |   23  |   24  |   20  |
+|  6  |    8  |   18  |   12  |
+
+Create vectors for each column.  Then create a dataframe called `df` with all vectors.  Next, find summary statistics for the entire df object.  Try to build at least one plot from this table.  
+
+```{r}
+
+```
+
+Now lets explore vector operations.
+- Add a column to `df` called `BooleanVec` with values T,T,F,T,F,T
+- Create a new column called `multiplyFour` which multiple `LineA` by 4.
+- Plot the tally of the `BooleanVec` column.
+- Table the `LineB` by  `BooleanVec`
+
+```{r}
+
+```
+

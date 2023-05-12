@@ -5,7 +5,7 @@
 
 
 ## Set the working directory
-setwd("~/Desktop/Hult_Visualizing-Analyzing-Data-with-R/personalFiles")
+setwd("~/Desktop/Hult_Intro2R/personalFiles")
 options(scipen=999)
 
 ## Load the libraries
@@ -17,7 +17,7 @@ library(ggthemes)
 library(caret)
 
 ## Bring in some data
-dat <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/BAN1/F_Apr4/data/bank-downSampled.csv')
+dat <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/E_DataPrep_Rpart_RF/data/bank-downSampled.csv')
 
 # EDA
 names(dat)
@@ -93,7 +93,7 @@ classOutcomeTest <- ifelse(oneHundredTwentyVoters$predictions[,2]>=0.5,
 Accuracy(as.factor(classOutcomeTest), 
          as.factor(treatedTest$Class))
 
-## Another method that is fast but can help you identify the optimal number of trees is the ranger method using caret.  The only "gotcha" is starting each parameter with a .
+## Another method that is fast but can help you identify the optimal number of trees is the ranger method using caret.  The only "gotcha" is starting each parameter with a perdio "."
 grid <- expand.grid(.mtry = c(1,2),
                     .splitrule = 'extratrees',
                     .min.node.size = c(1,2))
