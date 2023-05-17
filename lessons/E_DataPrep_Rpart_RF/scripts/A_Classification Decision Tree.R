@@ -123,44 +123,26 @@ head(trainCaret)
 
 # Get the conf Matrix
 confusionMatrix(trainCaret, as.factor(trainDat$y))
-#          Reference
-# Prediction    no   yes
-#        no  31071  2728
-#        yes   847  1523
-#  Accuracy : 0.9012
-# Sensitivity : 0.9735               
-# Specificity : 0.3583               
-# Pos Pred Value : 0.9193               
-# Neg Pred Value : 0.6426               
-# Prevalence : 0.8825               
-# Detection Rate : 0.8591               
-# Detection Prevalence : 0.9345               
-# Balanced Accuracy : 0.6659 
 
+# As an example here is how you get probabilities from predict()
+testCaretProbs <- predict(fit,testDat,type = 'prob')
+head(testCaretProbs)
 
 
 # In some data sets, we have "unbalanced" y variable data so we need to make adjustments. 
 # There are multiple methods for dealing with class imbalance.  Re-sampling methods could be "ROSE: Random Over-Sampling Examples"
 # or mlr::smote "Synthetic Minority Oversampling Technique "
 
-# Here we will use oversampling of the minority and under sampling of the majority. So let's make this a really unbalanced data set as an example
-currentPctYes  <- mean(trainDat$y == "yes")
-desiredPctYes  <- round(nrow(trainDat) * 0.02)
-numYesToRemove <- sum(trainDat$y == "yes") - desiredPctYes
-yesRowIndex    <- which(trainDat$y == "yes")
-drops          <- sample(yesRowIndex, numYesToRemove)
-fakeUnbalance <- trainDat[-drops, ]
 
-# Let's compare
-proportions(table(fakeUnbalance$y))
-proportions(table(trainDat$y))
-
-# If you're data looks like above, you need to generate the synthetic data to rebalance:
-resampledData <- ovun.sample(as.factor(y) ~., data = fakeUnbalance, method="both", 
+# You need to generate the synthetic data to rebalance:
+resampledData <- ovun.sample(as.factor(y) ~., data = trainDat, method="both", 
                              na.action=options("na.action")$na.action, seed=1234)
 
+# Let's compare
+proportions(table(resampledData$data$y))
+proportions(table(trainDat$y))
 
- 
+
 # Now we can add this rebalanced data to the train function
 set.seed(1234)
 fitRebalance <- train(as.factor(y) ~., 
@@ -174,23 +156,19 @@ plot(fitRebalance)
 
 
 # Make some predictions on the training set
-trainCaret <- predict(fit, resampledData$data)
-head(trainCaret)
+trainCaretRebalance <- predict(fitRebalance, resampledData$data)
+head(trainCaretRebalance)
 
 # Get the conf Matrix
-confusionMatrix(trainCaret, as.factor(resampledData$data$y))
+confusionMatrix(trainCaretRebalance, as.factor(resampledData$data$y))
 
 
 # Now more consistent accuracy and accounts for class imbalance
-testCaret <- predict(fit,testDat)
-confusionMatrix(testCaret,as.factor(testDat$y))
+testCaretRebalance <- predict(fitRebalance,testDat)
+confusionMatrix(testCaretRebalance,as.factor(testDat$y))
 
 # Let's compare the original to the rebalanced
 fit
 fitRebalance
-
-# As an example here is how you get probabilities from predict()
-testCaretProbs <- predict(fit,testDat,type = 'prob')
-head(testCaretProbs)
 
 # End
