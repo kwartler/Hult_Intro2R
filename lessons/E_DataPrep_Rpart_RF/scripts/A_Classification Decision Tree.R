@@ -11,6 +11,7 @@ options(scipen=999)
 ## Load the libraries
 library(caret)
 library(rpart.plot) #visualizing
+library(ROSE) #random oversample
 
 ## Bring in some data
 dat <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/E_DataPrep_Rpart_RF/data/bank-full_v2.csv') 
@@ -78,7 +79,7 @@ proportions(table(dat$y))
 # Start over
 rm(list=ls()[-grep('dat', ls())])
 
-# To save time in class, we are only training on 50% of the data
+# Partition
 splitPercent <- round(nrow(dat) %*% .80)
 totalRecords <- 1:nrow(dat)
 set.seed(1234)
@@ -108,7 +109,7 @@ fit <- train(as.factor(y) ~., #formula based
 # Examine
 fit
 
-# Plot the CP Accuracy Relationship to adust the tuneGrid inputs
+# Plot the CP Accuracy Relationship to adjust the tuneGrid inputs
 plot(fit)
 
 # Plot a pruned tree
@@ -122,46 +123,71 @@ head(trainCaret)
 
 # Get the conf Matrix
 confusionMatrix(trainCaret, as.factor(trainDat$y))
+#          Reference
+# Prediction    no   yes
+#        no  31071  2728
+#        yes   847  1523
+#  Accuracy : 0.9012
+# Sensitivity : 0.9735               
+# Specificity : 0.3583               
+# Pos Pred Value : 0.9193               
+# Neg Pred Value : 0.6426               
+# Prevalence : 0.8825               
+# Detection Rate : 0.8591               
+# Detection Prevalence : 0.9345               
+# Balanced Accuracy : 0.6659 
 
-#w In some data sets, we have "unbalanced" y variable data so we need to make adjustments. 
+
+
+# In some data sets, we have "unbalanced" y variable data so we need to make adjustments. 
 # There are multiple methods for dealing with class imbalance.  Re-sampling methods could be "ROSE: Random Over-Sampling Examples"
 # or mlr::smote "Synthetic Minority Oversampling Technique "
 
-# Simple method could be to observe the training data class weights and use that in the model fit.
-# This will increase the signal assigned to the minority class.
+# Here we will use oversampling of the minority and under sampling of the majority. So let's make this a really unbalanced data set as an example
+currentPctYes  <- mean(trainDat$y == "yes")
+desiredPctYes  <- round(nrow(trainDat) * 0.02)
+numYesToRemove <- sum(trainDat$y == "yes") - desiredPctYes
+yesRowIndex    <- which(trainDat$y == "yes")
+drops          <- sample(yesRowIndex, numYesToRemove)
+fakeUnbalance <- trainDat[-drops, ]
 
-classTally   <- proportions(table(trainDat$y))
-classTally
-classWeights <- ifelse(trainDat$y == "no", classTally[2], classTally[1])
+# Let's compare
+proportions(table(fakeUnbalance$y))
+proportions(table(trainDat$y))
+
+# If you're data looks like above, you need to generate the synthetic data to rebalance:
+resampledData <- ovun.sample(as.factor(y) ~., data = fakeUnbalance, method="both", 
+                             na.action=options("na.action")$na.action, seed=1234)
 
 
-# Here is how to use class weights in the original
-# tree <- rpart(as.factor(y) ~., data = trainDat, method = "class", weights = classWeights)
-
-# Here it is in the caret method:
+ 
+# Now we can add this rebalanced data to the train function
 set.seed(1234)
-fit <- train(as.factor(y) ~., 
-             data = trainDat, 
+fitRebalance <- train(as.factor(y) ~., 
+             data = resampledData$data, 
              method = "rpart", 
-             weights = classWeights,
              tuneGrid = data.frame(cp = c(0.0001, 0.001,0.005, 0.01, 0.05, 0.07, 0.1, .25)), 
              control = rpart.control(minsplit = 1, minbucket = 2)) 
 
 # Slightly different results but still similar
-plot(fit)
+plot(fitRebalance)
 
 
 # Make some predictions on the training set
-trainCaret <- predict(fit, trainDat)
+trainCaret <- predict(fit, resampledData$data)
 head(trainCaret)
 
 # Get the conf Matrix
-confusionMatrix(trainCaret, as.factor(trainDat$y))
+confusionMatrix(trainCaret, as.factor(resampledData$data$y))
 
 
 # Now more consistent accuracy and accounts for class imbalance
 testCaret <- predict(fit,testDat)
 confusionMatrix(testCaret,as.factor(testDat$y))
+
+# Let's compare the original to the rebalanced
+fit
+fitRebalance
 
 # As an example here is how you get probabilities from predict()
 testCaretProbs <- predict(fit,testDat,type = 'prob')
