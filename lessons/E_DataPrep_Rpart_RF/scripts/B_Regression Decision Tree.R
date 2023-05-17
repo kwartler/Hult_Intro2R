@@ -104,11 +104,11 @@ trainPreds <- predict(fit, treatedTrain)
 resultsDF <- data.frame(preds = round(exp(trainPreds)), actual = treatedTrain$salary_in_usd)
 head(resultsDF)
 ## You can see how the log version gets closer to outlier values now:
-# LOG            row1:  21606  18053
+# LOG/EXP        row1:  21606  18053
 # VS
 # ORIGINAL model row1:  50476  18053
 
-# KPI - similar results overall so not deteriorization of the model!
+# KPI 
 MLmetrics::RMSE(resultsDF$preds,resultsDF$actual)
 MLmetrics::MAPE(resultsDF$preds,resultsDF$actual)
 
@@ -125,12 +125,13 @@ MLmetrics::RMSE(resultsDF$preds,resultsDF$actual)
 MLmetrics::MAPE(resultsDF$preds,resultsDF$actual)
 
 # Another method is called Winsorization: caps outlier values to a range and replaces them with the upper or lower of the capped range. Library: datawizard::threshold becomes a tuning parameter.  Here anything in the bottom or top decile is changed to the decile cutoff.  Think of it like grouping low values and high values to some min/max bin
-# Compare
-hist(treatedTrain$salary_in_usd)
-hist(newSalary)
 
 # Cap the outcomes
 newSalary <- winsorize(treatedTrain$salary_in_usd, threshold = 0.1)
+
+# Compare
+hist(treatedTrain$salary_in_usd)
+hist(newSalary)
 
 # Now let's refit 
 set.seed(1234)

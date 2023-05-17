@@ -135,6 +135,6 @@ results <- data.frame(ntrees =numTreesVec,
 ggplot(results, aes(x=ntrees,y=oobError)) + geom_line(alpha =0.25, color = 'red') +
   theme_gdocs()+
   geom_smooth(method = "loess")
-# So here I would probably choose 250
+# So here I would probably choose 300 trees
 
 # End
