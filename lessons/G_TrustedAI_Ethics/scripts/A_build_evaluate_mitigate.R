@@ -4,6 +4,9 @@
 #' 
 #' 
 
+# wd
+setwd("~/Desktop/Hult_Intro2R/personalFiles")
+
 # libs 
 library(rpart)
 library(rpart.plot)
@@ -11,7 +14,7 @@ library(MLmetrics)
 library(fairness)
 
 # data
-df <- read.csv('~/Desktop/Hult_Intro2R/lessons/G_TrustedAI_Ethics/data/university_admission.csv')
+df <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/G_TrustedAI_Ethics/data/university_admission.csv')
 head(df)
 
 # Sample

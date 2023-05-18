@@ -114,19 +114,104 @@ allRatingsFunction
 lapply(allDF, head, n = 2)
 
 
-# Suppose we want to plot the relationship between price & rating for each df
+# Suppose we want to plot the relationship between price & number of ratings
 # We could do this as a loop; first clean it up then extract what we want and plot it
+
+dataList <- list()
 for(i in 1:length(allDF)){
   oneDF <- allDF[[i]]
-  # Ruppee  ₹
+  
+  # Clean actual price
+  oneDF$actual_price <- as.numeric(gsub('₹|,','',oneDF$actual_price))
+  # Clean oneDF$no_of_ratings
+  oneDF$no_of_ratings <- as.numeric(gsub(',','',oneDF$no_of_ratings))
+  
+  # Organize for the list
+  response <- data.frame(actual_price = oneDF$actual_price,
+                         no_of_ratings = oneDF$no_of_ratings)
+  
+  # Get the mean using apply
+  response <- apply(response, 2,mean, na.rm=T)
+  
+  # Make it into a DF & append category
+  response <- as.data.frame(t(response))
+  response$category <- oneDF$main_category[1]
+  dataList[[i]] <- response
 }
 
-# We could do this using apply functions
-onlyActualPrice <- lapply(allDF, '[',9)
-onlyRatings     <- lapply(allDF, '[',6)
+# Flatten
+plotDF <- do.call(rbind, dataList)
+
+# Examine & drop the outliers
+head(plotDF)
+summary(plotDF)
+
+plotDF <- subset(plotDF, plotDF$actual_price<quantile(plotDF$actual_price)[4])
+plotDF <- subset(plotDF, plotDF$no_of_ratings<quantile(plotDF$no_of_ratings)[4])
+
+# I expected a relationship but doesn't seem too strong!
+cor(plotDF$actual_price,plotDF$no_of_ratings)
+plot(plotDF$actual_price,plotDF$no_of_ratings)
 
 # We could do this with a custom function
+selectFixAvg <- function(oneDF){
+  # Clean actual price
+  oneDF$actual_price <- as.numeric(gsub('₹|,','',oneDF$actual_price))
+  # Clean oneDF$no_of_ratings
+  oneDF$no_of_ratings <- as.numeric(gsub(',','',oneDF$no_of_ratings))
+  
+  # Organize for the list
+  response <- data.frame(actual_price = oneDF$actual_price,
+                         no_of_ratings = oneDF$no_of_ratings)
+  
+  # Get the mean using apply
+  response <- apply(response, 2,mean, na.rm=T)
+  return(response)
+}
 
+# Same outcome
+plotDF <- lapply(allDF, selectFixAvg)
+plotDF <- do.call(rbind, plotDF)
+plotDF <- subset(plotDF, plotDF[,1]<quantile(plotDF[,1])[4])
+plotDF <- subset(plotDF, plotDF[,2]<quantile(plotDF[,2])[4])
+plot(plotDF[,1], plotDF[,2])
+
+# Or even another type of function to use a loop too
+fixAndPlot <- function(dfList, colsToGet  = c('actual_price','no_of_ratings')){
+  
+  # Grab the three columns
+  y <- lapply(dfList, '[', colsToGet)
+  
+  # Clean them up
+  for(i in 1:length(y)){
+    actual_price  <- mean(as.numeric(gsub('₹|,','', y[[i]][,1])), na.rm=T)
+    no_of_ratings <- mean(as.numeric(gsub('₹|,','', y[[i]][,2])), na.rm=T)
+    response <- data.frame(actual_price, no_of_ratings)
+    y[[i]] <- response
+  }
+  y <- do.call(rbind, y)
+  
+  # Rm outliers
+  plotDF <- subset(y, y[,1]<quantile(y[,1])[4])
+  plotDF <- subset(plotDF, plotDF[,2]<quantile(plotDF[,2])[4])
+
+  # notification
+  print(paste('correlation between columns:', cor(plotDF[,1], plotDF[,2])))
+  
+  # Plot construction
+  chartTitle <- paste(colsToGet[1], 'to', colsToGet[2])
+  p <- ggplot(plotDF,                   
+              aes_string(x = names(plotDF)[1],
+             y = names(plotDF)[2])) +
+    geom_point(aes(col = rownames(plotDF))) + theme_minimal() + theme(legend.position = "none") + 
+    ggtitle(chartTitle)
+  return(p)
+}
+
+# Benefit of a function is the ease of changing it for rapid exploration and its efficient, only one place to make edits!
+fixAndPlot(allDF, colsToGet  = c('actual_price','no_of_ratings'))
+fixAndPlot(allDF, colsToGet  = c('discount_price','no_of_ratings'))
+fixAndPlot(allDF, colsToGet  = c('discount_price','ratings'))
 
 
 # End

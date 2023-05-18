@@ -10,7 +10,6 @@ options(scipen=999)
 library(vtreat)
 library(dplyr)
 library(ggplot2)
-options(scipen = 999)
 
 # Read in the data
 donors<- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/DD1/F_Mar13/data/fakeDonorBureau_v2.csv')

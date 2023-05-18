@@ -29,9 +29,6 @@ tree <- rpart(y ~ ., data = df, method = "class")
 #Here, we're telling R to build a decision tree that predicts y using all other columns in df.
 #Next, we'll visualize the decision tree using the rpart.plot package.
 
-install.packages("rpart.plot")
-library(rpart.plot)
-
 rpart.plot(tree)
 
 #This will give us a visual representation of the decision tree. The resulting plot will show the root node (the topmost node in the tree) and the various branches and leaf nodes that make up the tree. Each node in the tree represents a decision based on one of the predictor columns in df, and the branches represent the possible outcomes of that decision.
