@@ -1,0 +1,59 @@
+Lesson Plan for Building an R Package
+
+Objective: To learn how to build a package in R with custom functions and data set.
+
+Prerequisites:
+
+Basic R programming knowledge
+Familiarity with R functions and documentation
+Duration: 60-90 minutes
+
+Materials:
+
+RStudio
+Project folder
+Lesson Steps:
+
+Introduction to R Packages
+
+Discuss the use of R Packages
+Explain how packages make R code reusable
+Outline the components of an R package
+Set Up the Project Folder
+
+Create a new R project in RStudio
+Use devtools::create("package_name") function to create a new package
+Discuss the structure of the directories and files in a package
+Navigate the project folder, showing the purpose of each folder
+Write Custom Scripts
+
+Create two custom functions in separate files and save them in the package’s “./R” folder
+Use user-defined functions to extract important information from a data frame
+Add in-line documentation to the functions
+Data Set
+
+Add a data set file in the package’s “./data” folder
+Create an R script to load data set into the environment
+Assign in-line documentation to the data set
+Build the Package
+
+Use the devtools::document() function to generate documentation files
+Use the devtools::build() function to build the package
+Discuss the generated source code and output files
+Share the package with peers using the install.packages() function.
+Summary
+
+Recap the package development process
+Explain the benefits of using R packages
+Suggest more advanced topics for further exploration.
+Assessment:
+
+Have students follow the lesson plan to build a package
+Review their code files to ensure the proper creation of functions and documentation
+Observe the students' ability to execute functions directly from the package
+Assess their use of exported functions correctly
+Extensions:
+
+Create a vignette to explain the use cases of the package
+Add unit tests for your functions using testthat package
+Add a license to the package using a tool like rencentr is a good idea.
