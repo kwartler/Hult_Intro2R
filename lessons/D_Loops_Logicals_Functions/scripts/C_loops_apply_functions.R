@@ -40,6 +40,14 @@ for(i in 1:length(allDF)){
   print(nrow(allDF[[i]]))
 }
 
+# Less often used while loop
+tracker <- 0
+while(tracker<=30){
+  print(tracker)
+  Sys.sleep(1)
+  tracker <- tracker +1
+}
+
 # Another method which is more efficient (fewer lines)
 sapply(allDF, nrow)
 # Compare
