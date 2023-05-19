@@ -1,7 +1,0 @@
-Certainly! Let's say there are two groups of people: group A and group B. These groups can be different in many ways, such as age, gender, or race. We want to make sure that any decision made based on data is fair and unbiased towards both groups.
-
-Now, let's say we have a rule that people with blue eyes are always chosen for a particular job. If group A has a higher proportion of people with blue eyes than group B, then this rule would be likely to unfairly benefit group A over group B. That's not fair, and we want to avoid that.
-
-So, to address this problem, we can use proportional parity, which means that we want the proportion of people selected for the job to be equal for both groups. For example, if group A has 60% of the population with blue eyes and group B has 40%, then we want to choose 60% of our new hires from group A and 40% from group B. That way, the blue-eyed rule is applied equally to both groups, and no one is favored or discriminated against based on their group membership.
-
-Proportional parity is one way to ensure fairness and equity in decision-making processes by leveling the playing field for all groups and treating everyone equally.
