@@ -4,54 +4,52 @@
 #' Date: Feb 16, 2023
 
 # Step 1 Set the working directory: where's the fruit? Where should I save my outputs?
-setwd("...")
+setwd("~/Desktop/Hult_Intro2R/personalFiles")
 
-# Step 2 Load ggplot2, ggthemes
+# Step 2 Load some libraries: Make R a customized piece of software
 options(scipen = 999)
-library(...)
-library(...)
+library(ggplot2)
+library(ggthemes)
 
 # Input to script used later
-movieTitle <- '...' #Star Wars #Lego Movie #Mary Poppins
+movieTitle <- 'Mary Poppins' #Star Wars #Lego Movie
 
 # Step 3 Bring in some data: Go get our banana!
 # Choose your movie
 moviePoppins <- 'https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/A_Intro_Administrative/data/poppins_definedScenes.csv'
 movieStarWars <- 'https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/BAN1/A_Mar21/data/forceAwakens_definedScenes.csv'
 movieLego <- 'https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/A_Intro_Administrative/data/lego_definedScenes.csv'
-
-# Get the data
-scenesDF <- read.csv('...')
+scenesDF <- read.csv(moviePoppins)
 
 # Step 4 Apply functions: Perform the task we want on our data: Cut & Peel our banana!
 
-# Use the names() function to review the names of scenesDF
-...(...)
+# Use the names function to review the names of scenesDF
+names(scenesDF)
 
 # Review the bottom 6 records of scenesDF
-tail(...)
+tail(scenesDF)
 
-# Clean up the raw data id column with a "global substitution" gsub() function
-scenesDF$id <- ...('/xray/scene/', "", scenesDF$id)
+# Clean up the raw data with a "global substitution"
+scenesDF$id <- gsub('/xray/scene/', "", scenesDF$id)
 tail(scenesDF)
 
 # Change ID class from string to numeric
-scenesDF$... <- as.numeric(...$id)
+scenesDF$id <- as.numeric(scenesDF$id)
 
-# Remove the fictionalLocation column
-scenesDF$... <- NULL
+# Remove a column
+scenesDF$fictionalLocation <- NULL
 
-# Make a new column called length & review
-scenesDF$length <- ...$end - scenesDF$... 
-head(...$...)
+# Make a new column & review
+scenesDF$length <- scenesDF$end - scenesDF$start 
+head(scenesDF$length)
 
-# Basic statistics for the entire DF
-summary(...) 
+# Basic statistics
+summary(scenesDF) 
 
-# Adjust the start, end, and length time for minutes not milliseconds
-scenesDF$start  <- (scenesDF$.../1000) /60
-scenesDF$end    <- (scenesDF$.../1000) /60
-scenesDF$length <- (scenesDF$.../1000) /60
+# Adjust the duration and time for minutes not milliseconds
+scenesDF$start  <- (scenesDF$start/1000) /60
+scenesDF$end    <- (scenesDF$end/1000) /60
+scenesDF$length <- (scenesDF$length/1000) /60
 
 # Apply a logical operator
 plotDF <- switch(movieTitle,
@@ -60,8 +58,8 @@ plotDF <- switch(movieTitle,
                  'Lego Movie'   = scenesDF[1:15,])
 
 # Review the change (unless Mary Poppins)
-dim(...)
-dim(...)
+dim(scenesDF)
+dim(plotDF)
 
 # Step 5: Consume our results: Plot/Eat the banana!
 # We removed the bonus features and are only looking at the first 38 scenes
