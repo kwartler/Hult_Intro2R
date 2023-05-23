@@ -62,21 +62,22 @@ codeHelp <- function(userPrompt,
     statusResp <- paste0('The POST request failed with status: ',statusChk)
     response <- statusResp
   }
+  response <- paste(response, collapse = '\n')
   return(response)
 }
 
 # Example
 #codeHelpExample <- codeHelp(userPrompt = "write code to create a stacked bar chart. Each bar should be for a state and The object `df` is a data frame with columns `id',`state`,  `subcateogry`,`revenue`", 
 # max_tokens  = 256*2)
-#codeHelpExample
+#cat(codeHelpExample)
 
 # Test
 #testResp <- codeHelp('write code to create a decision tree')
 #testResp
-#cat(paste(testResp, collapse = '\n'))
+#cat(testResp)
 
 # Bring in the general gpt helper for an explanation
-#source("~/Desktop/Hult_Intro2R/lessons/B_GPT_Robjects/B_anyPromptOpenAI.R")
+source("~/Documents/HultClass/lessons/B_GPT_Robjects/scripts/B_anyPromptOpenAI.R")
 #anyPrompt(paste('can you explain the following code?',testResp, collapse = ' '),
 #          apiKey = Sys.getenv("OPENAI_KEY"))
 
