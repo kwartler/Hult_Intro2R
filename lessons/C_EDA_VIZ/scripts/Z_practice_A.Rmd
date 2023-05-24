@@ -127,7 +127,7 @@ Create vectors for each column.  Then create a dataframe called `df` with all ve
 
 Now lets explore vector operations.
 - Add a column to `df` called `BooleanVec` with values T,T,F,T,F,T
-- Create a new column called `multiplyFour` which multiple `LineA` by 4.
+- Create a new column called `multiplyFour` which multiply `LineA` by 4.
 - Plot the tally of the `BooleanVec` column.
 - Table the `LineB` by  `BooleanVec`
 
