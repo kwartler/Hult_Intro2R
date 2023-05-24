@@ -6,6 +6,7 @@
 # Libs
 library(stringr)
 library(dplyr)
+library(ggplot2)
 
 #Mixed Media
 #https://github.com/tashapiro/tanya-data-viz/tree/main/dicaprio-gfs
