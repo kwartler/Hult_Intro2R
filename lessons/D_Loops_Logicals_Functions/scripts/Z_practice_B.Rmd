@@ -1,6 +1,6 @@
 
 ---
-title: "Practice 2 - loops, logicals and custom functions"
+title: "Practice 2 - more coding"
 ---
 
 ---
