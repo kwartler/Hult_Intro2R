@@ -88,6 +88,12 @@ MLmetrics::MAPE(resultsDF$preds,resultsDF$actual)
 plot(density(treatedTrain$salary_in_usd))
 plot(sort(log(treatedTrain$salary_in_usd))) # the model should ID the middle range, with the most records more easily
 
+## Quick reminder a log() is like counting how many times you have to cut a number in half to reach 1
+log(8, base = 2) #3 = 8/2= 4, 4/2 = 2, 2/2 = 1
+# Default is  exp(1)
+log(8, exp(1)) #exp(1) = 2.718282 = e^x where e is Euler's number 2.72^1 so here it's 8 cut by 2.72 to reach 1
+
+
 # Try with log
 set.seed(1234)
 fit <- train(log(salary_in_usd) ~., 

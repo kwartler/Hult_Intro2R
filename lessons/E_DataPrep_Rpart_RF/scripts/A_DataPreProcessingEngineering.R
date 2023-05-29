@@ -12,7 +12,7 @@ library(dplyr)
 library(ggplot2)
 
 # Read in the data
-donors<- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/DD1/F_Mar13/data/fakeDonorBureau_v2.csv')
+donors<- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/E_DataPrep_Rpart_RF/data/fakeDonorBureau_v2.csv')
 
 # Examine; Here you would perform EDA
 summary(donors)
@@ -58,14 +58,14 @@ summary(treatedData)
 rm(list=ls()[-grep('donors', ls())])
 
 # Fictitious Data Enrichment; its a BEST PRACTICE to load all tables in one section but this script is for reference
-thirdPartyData <- read.csv( 'https://raw.githubusercontent.com/kwartler/Hult_Visualizing-Analyzing-Data-with-R/main/DD1/F_Mar13/data/fakeDataEnrichment.csv')
+thirdPartyData <- read.csv( 'https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/E_DataPrep_Rpart_RF/data/fakeDataEnrichment.csv')
 
 # Examine
 head(thirdPartyData)
 
 # Perform a join to the existing data
 # Bring new data to the 3120 donors
-leftData <- left_join(donors, thirdPartyData) 
+leftData <- left_join(donors, thirdPartyData,by = join_by(uniqueID)) 
 
 ## A taste of whats to come...for those in the know, yes we are skipping a lot of steps.
 newInformativeFeatures <- names(leftData)[c(4:20,22,23)]
@@ -83,6 +83,7 @@ fit             <- glm(as.factor(Y1_Donation) ~ ., treatedLeftData, family='bino
 summary(fit)
 
 # Let's make it parsimonious
+# Lower AIC is better; measures tradeoff on accuracy to inputs
 parismonyFit <- step(fit, direction = 'backward')
 
 # Make some real predictions
@@ -100,6 +101,7 @@ ggplot(predDF, aes(x=probs, group= actual, color = actual))+geom_density()
 cutoff <- 0.5
 predClass <- ifelse(donationProbability>=cutoff,'Yes','No')
 table(treatedLeftData$Y1_Donation, predClass)
-
+MLmetrics::Accuracy(predClass, predDF$actual)
+proportions(table(predDF$actual))
 
 # End

@@ -5,7 +5,7 @@
 
 
 ## Set the working directory
-setwd("~/Desktop/Hult_Intro2R/personalFiles")
+setwd("~/Desktop/Hult_Visualizing-Analyzing-Data-with-R/personalFiles")
 options(scipen=999)
 
 ## Load the libraries
@@ -39,9 +39,6 @@ overFit <- rpart(as.factor(y) ~ .,
 
 # Look at all the rules!!
 overFit
-
-# Don't bother plotting, takes a while 
-#prp(overFit, extra = 1)
 
 # Look at training classes
 trainProbs <- predict(overFit, trainDat) 
@@ -128,11 +125,9 @@ confusionMatrix(trainCaret, as.factor(trainDat$y))
 testCaretProbs <- predict(fit,testDat,type = 'prob')
 head(testCaretProbs)
 
-
 # In some data sets, we have "unbalanced" y variable data so we need to make adjustments. 
 # There are multiple methods for dealing with class imbalance.  Re-sampling methods could be "ROSE: Random Over-Sampling Examples"
 # or mlr::smote "Synthetic Minority Oversampling Technique "
-
 
 # You need to generate the synthetic data to rebalance:
 resampledData <- ovun.sample(as.factor(y) ~., data = trainDat, method="both", 
@@ -146,10 +141,10 @@ proportions(table(trainDat$y))
 # Now we can add this rebalanced data to the train function
 set.seed(1234)
 fitRebalance <- train(as.factor(y) ~., 
-             data = resampledData$data, 
-             method = "rpart", 
-             tuneGrid = data.frame(cp = c(0.0001, 0.001,0.005, 0.01, 0.05, 0.07, 0.1, .25)), 
-             control = rpart.control(minsplit = 1, minbucket = 2)) 
+                      data = resampledData$data, 
+                      method = "rpart", 
+                      tuneGrid = data.frame(cp = c(0.0001, 0.001,0.005, 0.01, 0.05, 0.07, 0.1, .25)), 
+                      control = rpart.control(minsplit = 1, minbucket = 2)) 
 
 # Slightly different results but still similar
 plot(fitRebalance)
