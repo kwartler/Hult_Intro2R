@@ -25,8 +25,8 @@ setwd("~/Desktop/Hult_Intro2R/personalFiles")
 # Inputs
 author        <- 'Dale the Data Scientist'
 searchPattern <- 'Wk1' #one could programatically obtain the week of the year using lubridate
-dataPaths     <- '~/Desktop/Hult_Intro2R/lessons/F_Markdown_Office/data'
-templatePath  <- '~/Desktop/Hult_Intro2R/lessons/F_Markdown_Office/data/hult.pptx'
+dataPaths     <- '~/Desktop/Hult_Intro2R/lessons/F_New_RF_pptxMaker/data'
+templatePath  <- '~/Desktop/Hult_Intro2R/lessons/F_New_RF_pptxMaker/data/hult.pptx'
 
 # ID the CSV
 pth <- list.files(path = dataPaths,

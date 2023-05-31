@@ -17,7 +17,7 @@ library(ggthemes)
 library(caret)
 
 ## Bring in some data
-dat <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/E_DataPrep_Rpart_RF/data/bank-downSampled.csv')
+dat <- read.csv('https://raw.githubusercontent.com/kwartler/Hult_Intro2R/main/lessons/F_New_RF_pptxMaker/data/bank-downSampled.csv')
 
 # EDA
 names(dat)
