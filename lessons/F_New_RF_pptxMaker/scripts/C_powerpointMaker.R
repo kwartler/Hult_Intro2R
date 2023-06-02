@@ -23,8 +23,8 @@ printAllLayouts <- function(pptxObj){
 setwd("~/Desktop/Hult_Intro2R/personalFiles")
 
 # Inputs
-author        <- 'Dale the Data Scientist'
-searchPattern <- 'Wk1' #one could programatically obtain the week of the year using lubridate
+author        <- 'Ted Kwartler'
+searchPattern <- 'Wk3' #one could programatically obtain the week of the year using lubridate
 dataPaths     <- '~/Desktop/Hult_Intro2R/lessons/F_New_RF_pptxMaker/data'
 templatePath  <- '~/Desktop/Hult_Intro2R/lessons/F_New_RF_pptxMaker/data/hult.pptx'
 
